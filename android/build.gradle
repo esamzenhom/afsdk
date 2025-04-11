@@ -49,7 +49,11 @@ android {
 
 //    configurations.maybeCreate("default")
 //    artifacts.add("default", file('libs/AFSDK_V0.0.236_236.aar'))
-
+repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://developer.huawei.com/repo/' } // ✅ Add this
+}
     dependencies {
         implementation fileTree(dir: 'libs', includes: ['*.jar', '*.aar'])
 
