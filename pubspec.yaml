@@ -1,6 +1,6 @@
 name: afsdk
 description: "This project is a Flutter plugin designed for the ANFU AF930 Android POS device."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/esamzenhom/afsdk
 
 environment:
