@@ -94,9 +94,7 @@ class _MyAppState extends State<MyApp> {
             ),
             SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {
-                requestCameraPermission();
-              },
+              onPressed: () {},
               child: Text("Scan Code"),
             ),
             SizedBox(height: 8),
@@ -120,34 +118,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  Future<void> requestCameraPermission() async {
-    var status = await Permission.camera.status;
-
-    if (!status.isGranted) {
-      status = await Permission.camera.request();
-    }
-
-    if (status.isGranted) {
-      print("✅ Camera permission granted");
-      _afsdkPlugin.scanCode().then((result) {
-        setState(() {
-          debugData = result.toString();
-        });
-        debugPrint("Scan Code 1111 success");
-      }).onError(
-        (error, stackTrace) {
-          debugPrint("Scan Code 1111 failed :: $error");
-          debugPrint(stackTrace.toString());
-        },
-      );
-    } else if (status.isPermanentlyDenied) {
-      print("❌ Permission permanently denied. Show dialog to open settings.");
-      // openAppSettings(); // Optionally prompt to open settings
-    } else {
-      print("❌ Camera permission denied");
-    }
   }
 
   String printText() {

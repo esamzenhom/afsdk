@@ -12,9 +12,9 @@ import android.os.IBinder
 import android.os.RemoteException
 import android.util.Log
 import android.widget.Toast
-import com.abk.afsdk.Camera2Activity
+//import com.abk.afsdk.Camera2Activity
 import com.abk.afsdk.R
-import com.abk.afsdk.camera2.Camera2Helper
+//import com.abk.afsdk.camera2.Camera2Helper
 import com.abk.utils.HexUtil
 import com.abk.utils.LogUtil
 import com.abk.utils.PrintUtil
@@ -75,15 +75,7 @@ class AfsdkPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAwar
             beepTest()
         } else if (call.method == "readCard") {
             mifareCardData()
-        } else if (call.method == "scanCode") {
-            val intent = Intent(activity!!, Camera2Activity::class.java)
-            intent.putExtra(Camera2Activity.CAMERA_ID, Camera2Helper.CAMERA_ID_BACK)
-            intent.putExtra(Camera2Activity.DECODE_LIB, Camera2Helper.DECODE_LIB_HW)
-            activity!!.startActivityForResult(
-                intent,
-                REQUEST_CODE_CUSTOM_BACK_CAMERA_BY_HW
-            )
-        } else {
+        }  else {
             result.notImplemented()
         }
     }
@@ -487,104 +479,7 @@ class AfsdkPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAwar
             return false
         }
 
-        var hmsScan: HmsScan? = null
-        if (requestCode == REQUEST_CODE_CUSTOM_BACK_CAMERA_BY_HW) {
-            hmsScan = data.getParcelableExtra<HmsScan?>(Camera2Activity.SCAN_RESULT)
-
-            val time = data.getLongExtra(Camera2Activity.SCAN_TIME, -1)
-
-            if (hmsScan != null) {
-                val originalValue = hmsScan.getOriginalValue()
-                LogUtil.i("szaf", "hmsScan : " + originalValue)
-//                rawResult.setText(hmsScan.getOriginalValue())
-                var codeFormat = ""
-
-                if (hmsScan.getScanType() == HmsScan.QRCODE_SCAN_TYPE) {
-                    codeFormat = "QR code"
-                } else if (hmsScan.getScanType() == HmsScan.AZTEC_SCAN_TYPE) {
-                    codeFormat = "AZTEC code"
-                } else if (hmsScan.getScanType() == HmsScan.DATAMATRIX_SCAN_TYPE) {
-                    codeFormat = "DATAMATRIX code"
-                } else if (hmsScan.getScanType() == HmsScan.PDF417_SCAN_TYPE) {
-                    codeFormat = "PDF417 code"
-                } else if (hmsScan.getScanType() == HmsScan.CODE93_SCAN_TYPE) {
-                    codeFormat = "CODE93"
-                } else if (hmsScan.getScanType() == HmsScan.CODE39_SCAN_TYPE) {
-                    codeFormat = "CODE39"
-                } else if (hmsScan.getScanType() == HmsScan.CODE128_SCAN_TYPE) {
-                    codeFormat = "CODE128"
-                } else if (hmsScan.getScanType() == HmsScan.EAN13_SCAN_TYPE) {
-                    codeFormat = "EAN13 code"
-                } else if (hmsScan.getScanType() == HmsScan.EAN8_SCAN_TYPE) {
-                    codeFormat = "EAN8 code"
-                } else if (hmsScan.getScanType() == HmsScan.ITF14_SCAN_TYPE) {
-                    codeFormat = "ITF14 code"
-                } else if (hmsScan.getScanType() == HmsScan.UPCCODE_A_SCAN_TYPE) {
-                    codeFormat = "UPCCODE_A"
-                } else if (hmsScan.getScanType() == HmsScan.UPCCODE_E_SCAN_TYPE) {
-                    codeFormat = "UPCCODE_E"
-                } else if (hmsScan.getScanType() == HmsScan.CODABAR_SCAN_TYPE) {
-                    codeFormat = "CODABAR"
-                }
-
-
-                //Show the barcode result.
-                var scanType = ""
-                if (hmsScan.getScanType() == HmsScan.QRCODE_SCAN_TYPE) {
-
-                    if (hmsScan.getScanTypeForm() == HmsScan.PURE_TEXT_FORM) {
-                        scanType = "Text"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.EVENT_INFO_FORM) {
-                        scanType = "Event"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.CONTACT_DETAIL_FORM) {
-                        scanType = "Contact"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.DRIVER_INFO_FORM) {
-                        scanType = "License"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.EMAIL_CONTENT_FORM) {
-                        scanType = "Email"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.LOCATION_COORDINATE_FORM) {
-                        scanType = "Location"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.TEL_PHONE_NUMBER_FORM) {
-                        scanType = "Tel"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.SMS_FORM) {
-                        scanType = "SMS"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.WIFI_CONNECT_INFO_FORM) {
-                        scanType = "Wi-Fi"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.URL_FORM) {
-                        scanType = "WebSite"
-                    } else {
-                        scanType = "Text"
-                    }
-                } else if (hmsScan.getScanType() == HmsScan.EAN13_SCAN_TYPE) {
-                    if (hmsScan.getScanTypeForm() == HmsScan.ISBN_NUMBER_FORM) {
-                        scanType = "ISBN"
-                    } else if (hmsScan.getScanTypeForm() == HmsScan.ARTICLE_NUMBER_FORM) {
-                        scanType = "Product"
-                    }
-                } else if (hmsScan.getScanType() == HmsScan.EAN8_SCAN_TYPE || hmsScan.getScanType() == HmsScan.UPCCODE_A_SCAN_TYPE || hmsScan.getScanType() == HmsScan.UPCCODE_E_SCAN_TYPE) {
-                    if (hmsScan.getScanTypeForm() == HmsScan.ARTICLE_NUMBER_FORM) {
-                        scanType = "Product"
-                    }
-                }
-
-                try {
-                    val obj = JSONObject().apply {
-                        put("originalValue", originalValue)
-                        put("codeFormat", codeFormat)
-                        put("scanType", scanType)
-                    }
-                    val map = jsonObjectToMap(obj)
-                    resultToReturn?.success(map)
-                    resultToReturn = null
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-//                Intent intent = new Intent(this, DisPlayActivity.class);
-//                intent.putExtra(RESULT, obj);
-//                startActivity(intent);
-            }
-        }
+        //var hmsScan: HmsScan? = null
         return false
     }
 

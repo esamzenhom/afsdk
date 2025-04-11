@@ -14,10 +14,6 @@ class Afsdk {
     return AfsdkPlatform.instance.beepBuzzer();
   }
 
-  Future<Map<String, dynamic>?> scanCode() {
-    return AfsdkPlatform.instance.scanCode();
-  }
-
   Future<Map<String, dynamic>?> readCard() {
     return AfsdkPlatform.instance.readCard();
   }
