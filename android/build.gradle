@@ -53,7 +53,7 @@ android {
 repositories {
     google()
     mavenCentral()
-    maven { url 'https://developer.huawei.com/repo/' } // ✅ Add this
+   //maven { url 'https://developer.huawei.com/repo/' } // ✅ Add this
 }
     dependencies {
         implementation fileTree(dir: 'libs', includes: ['*.jar', '*.aar'])
