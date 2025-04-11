@@ -18,7 +18,7 @@ import com.abk.afsdk.camera2.Camera2Helper
 import com.abk.utils.HexUtil
 import com.abk.utils.LogUtil
 import com.abk.utils.PrintUtil
-import com.huawei.hms.ml.scan.HmsScan
+//import com.huawei.hms.ml.scan.HmsScan
 import com.szanfu.sdk.api.ISdkServiceManager
 import com.szanfu.sdk.api.card.ICardBinderService
 import com.szanfu.sdk.api.card.ICardTestCallback
