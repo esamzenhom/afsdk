@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="print_serviceerror">Failed to obtain the print service. Please check the service</string>
+    <string name="scan_tip">Place the code within the frame</string>
+    <string name="title_scan">Scan the QR code</string>
+</resources>
