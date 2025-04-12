@@ -70,10 +70,13 @@ class AfsdkPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAwar
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         resultToReturn = result
         if (call.method == "printImage") {
+            LogUtil.d("printerCalled")
             printImage(call.argument<ByteArray>("image")!!)
         } else if (call.method == "beepBuzzer") {
+            LogUtil.d("buzzerCalled")
             beepTest()
         } else if (call.method == "readCard") {
+            LogUtil.d("readCardCalled")
             mifareCardData()
         }  else {
             result.notImplemented()
